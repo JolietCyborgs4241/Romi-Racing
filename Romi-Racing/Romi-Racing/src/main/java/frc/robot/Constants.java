@@ -12,4 +12,23 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants 
+{
+    public static final class LED_PINS
+    {
+        public static final int RED_LED_DIO_PIN = 8; //EXT PIN: 0
+        public static final int GREEN_LED_DIO_PIN = 9; //EXT PIN: 1
+        public static final int BLUE_LED_DIO_PIN = 10; //EXT PIN : 2
+    }
+
+    public static final class COPY_PATTERN_ROUND
+    {
+        public static final int RED_LED_ORDER_ID = 0;
+        public static final int GREEN_LED_ORDER_ID = 1;
+        public static final int BLUE_LED_ORDER_ID = 2; 
+
+        public static final int SIGNALED_LED_DURATION_MILLIS = 500;
+        public static final int ROUND_COOL_DOWN_MILLIS = 1000;
+        public static final double BASE_TRAVEL_INCHES = 2.0; 
+    }
+}
