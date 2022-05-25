@@ -7,12 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.AutonomousDistance;
-import frc.robot.commands.AutonomousTime;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.OnBoardIO;
-import frc.robot.subsystems.OnBoardIO.ChannelMode;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,40 +16,17 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
 public class RobotContainer {
-  private final Drivetrain m_drivetrain = new Drivetrain();
-  private final OnBoardIO m_onboardIO = new OnBoardIO(ChannelMode.INPUT, ChannelMode.INPUT);
-
+  private final Drivetrain drivetrain = new Drivetrain();
   // Assumes a gamepad plugged into channnel 0
-  private final Joystick m_controller = new Joystick(0);
-  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private final Joystick controller = new Joystick(0);
 
-  // NOTE: The I/O pin functionality of the 5 exposed I/O pins depends on the hardware "overlay"
-  // that is specified when launching the wpilib-ws server on the Romi raspberry pi.
-  // By default, the following are available (listed in order from inside of the board to outside):
-  // - DIO 8 (mapped to Arduino pin 11, closest to the inside of the board)
-  // - Analog In 0 (mapped to Analog Channel 6 / Arduino Pin 4)
-  // - Analog In 1 (mapped to Analog Channel 2 / Arduino Pin 20)
-  // - PWM 2 (mapped to Arduino Pin 21)
-  // - PWM 3 (mapped to Arduino Pin 22)
-  //
-  // Your subsystem configuration should take the overlays into account
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     configureButtonBindings();
   }
 
   private void configureButtonBindings() {
-  
+    
   }
 
-  public Command getAutonomousCommand() {
-    return m_chooser.getSelected();
-  }  
-
-  public void getArcadeDriveCommand() {
-        final double degrees = 0;
-        final double speed = -m_controller.getRawAxis(1);
-        m_drivetrain.arcadeDrive(speed, degrees);
-  }
+  public Command getAutonomousCommand() {return null;}  
 }

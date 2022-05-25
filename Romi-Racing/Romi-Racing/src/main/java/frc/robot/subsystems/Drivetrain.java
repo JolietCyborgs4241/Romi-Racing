@@ -12,131 +12,89 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
-  private static final double kCountsPerRevolution = 1440.0;
-  private static final double kWheelDiameterInch = 2.75591; // 70 mm
 
+  private static final double counts_per_revolution = 1440.0;
+  private static final double wheel_diameter_inches = 2.75591; // 70 mm
   // The Romi has the left and right motors set to
   // PWM channels 0 and 1 respectively
-  private final Spark m_leftMotor = new Spark(0);
-  private final Spark m_rightMotor = new Spark(1);
-
+  private final Spark left_motor = new Spark(0);
+  private final Spark right_motor = new Spark(1);
   // The Romi has onboard encoders that are hardcoded
   // to use DIO pins 4/5 and 6/7 for the left and right
-  private final Encoder m_leftEncoder = new Encoder(4, 5);
-  private final Encoder m_rightEncoder = new Encoder(6, 7);
-
+  private final Encoder left_encoder = new Encoder(4, 5);
+  private final Encoder right_encoder = new Encoder(6, 7);
   // Set up the differential drive controller
-  private final DifferentialDrive m_diffDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
-
+  private final DifferentialDrive differential_drive = new DifferentialDrive(left_motor, right_motor);
   // Set up the RomiGyro
-  private final RomiGyro m_gyro = new RomiGyro();
-
+  private final RomiGyro gyro = new RomiGyro();
   // Set up the BuiltInAccelerometer
-  private final BuiltInAccelerometer m_accelerometer = new BuiltInAccelerometer();
+  private final BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
 
-  /** Creates a new Drivetrain. */
   public Drivetrain() {
-    // We need to invert one side of the drivetrain so that positive voltages
-    // result in both sides moving forward. Depending on how your robot's
-    // gearbox is constructed, you might have to invert the left side instead.
-    m_rightMotor.setInverted(true);
-
-    // Use inches as unit for encoder distances
-    m_leftEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
-    m_rightEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
+    right_motor.setInverted(true);
+    left_encoder.setDistancePerPulse((Math.PI * wheel_diameter_inches) / counts_per_revolution);
+    right_encoder.setDistancePerPulse((Math.PI * wheel_diameter_inches) / counts_per_revolution);
     resetEncoders();
   }
 
-  public void arcadeDrive(double xaxisSpeed, double zaxisRotate) {
-    m_diffDrive.arcadeDrive(xaxisSpeed, zaxisRotate);
-  }
-
   public void resetEncoders() {
-    m_leftEncoder.reset();
-    m_rightEncoder.reset();
+    left_encoder.reset();
+    right_encoder.reset();
   }
 
   public int getLeftEncoderCount() {
-    return m_leftEncoder.get();
+    return left_encoder.get();
   }
 
   public int getRightEncoderCount() {
-    return m_rightEncoder.get();
+    return right_encoder.get();
   }
 
   public double getLeftDistanceInch() {
-    return m_leftEncoder.getDistance();
+    return left_encoder.getDistance();
   }
 
   public double getRightDistanceInch() {
-    return m_rightEncoder.getDistance();
+    return right_encoder.getDistance();
   }
 
   public double getAverageDistanceInch() {
     return (getLeftDistanceInch() + getRightDistanceInch()) / 2.0;
   }
 
-  /**
-   * The acceleration in the X-axis.
-   *
-   * @return The acceleration of the Romi along the X-axis in Gs
-   */
   public double getAccelX() {
-    return m_accelerometer.getX();
+    return accelerometer.getX();
   }
 
-  /**
-   * The acceleration in the Y-axis.
-   *
-   * @return The acceleration of the Romi along the Y-axis in Gs
-   */
   public double getAccelY() {
-    return m_accelerometer.getY();
+    return accelerometer.getY();
   }
 
-  /**
-   * The acceleration in the Z-axis.
-   *
-   * @return The acceleration of the Romi along the Z-axis in Gs
-   */
   public double getAccelZ() {
-    return m_accelerometer.getZ();
+    return accelerometer.getZ();
   }
 
-  /**
-   * Current angle of the Romi around the X-axis.
-   *
-   * @return The current angle of the Romi in degrees
-   */
   public double getGyroAngleX() {
-    return m_gyro.getAngleX();
+    return gyro.getAngleX();
   }
 
-  /**
-   * Current angle of the Romi around the Y-axis.
-   *
-   * @return The current angle of the Romi in degrees
-   */
   public double getGyroAngleY() {
-    return m_gyro.getAngleY();
+    return gyro.getAngleY();
   }
 
-  /**
-   * Current angle of the Romi around the Z-axis.
-   *
-   * @return The current angle of the Romi in degrees
-   */
   public double getGyroAngleZ() {
-    return m_gyro.getAngleZ();
+    return gyro.getAngleZ();
   }
 
-  /** Reset the gyro. */
   public void resetGyro() {
-    m_gyro.reset();
+    gyro.reset();
+  }
+
+  public void tankDrive(double left_speed, double right_speed)
+  {
+    differential_drive.tankDrive(left_speed, right_speed);
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+  public void periodic() {}
 }
