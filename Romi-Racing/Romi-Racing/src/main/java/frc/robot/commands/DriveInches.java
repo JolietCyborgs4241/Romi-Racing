@@ -24,7 +24,7 @@ public class DriveInches extends CommandBase {
     drivetrain.tankDrive(0, 0);
     drivetrain.resetEncoders();
   }
-
+     
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {

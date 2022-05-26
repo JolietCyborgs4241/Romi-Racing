@@ -1,5 +1,15 @@
 package frc.robot.commands;
 
-public class RotateDegrees {
-    
+import edu.wpi.first.wpilibj2.command.CommandBase;
+
+public class RotateDegrees extends CommandBase{ 
+    @Override
+
+    public void initialize(){
+     
+    }
+
+
 }
+
+
