@@ -25,6 +25,7 @@ public class DriveLEDPattern extends CommandBase
                 LED_Activity LED_activity = getLEDActivity(LED_ID_pattern, i);
                 LEDs.enableLEDs(LED_activity.red_is_active, LED_activity.green_is_active, LED_activity.blue_is_active);
                 Thread.sleep(Constants.COPY_PATTERN_ROUND.SIGNALED_LED_DURATION_MILLIS);
+                
             }
             catch(InterruptedException e) {}
         }
