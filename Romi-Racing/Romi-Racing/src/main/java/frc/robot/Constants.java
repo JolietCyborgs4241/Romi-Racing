@@ -14,6 +14,12 @@ package frc.robot;
  */
 public final class Constants 
 {
+    public static final class TRAVEL_DISTANCE
+    {
+        public static final int RACE_OVERALL_INCHES = 48;
+        public static final int BASE_TRAVEL_INCHES = 2; 
+    }
+
     public static final class JOYSTICK_IDS
     {
         public static final int CONTROLLER = 0;
@@ -31,9 +37,9 @@ public final class Constants
         public static final int RED_LED_ORDER_ID = 0;
         public static final int GREEN_LED_ORDER_ID = 1;
         public static final int BLUE_LED_ORDER_ID = 2; 
+        public static final int[] ORDERS_LISTED = {RED_LED_ORDER_ID, GREEN_LED_ORDER_ID, BLUE_LED_ORDER_ID};
         
         public static final int SIGNALED_LED_DURATION_MILLIS = 500;
         public static final int ROUND_COOL_DOWN_MILLIS = 1000;
-        public static final int BASE_TRAVEL_INCHES = 2; 
     }
 }

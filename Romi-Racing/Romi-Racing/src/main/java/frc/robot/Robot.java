@@ -6,12 +6,13 @@ package frc.robot;
 
 import java.util.LinkedList;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.DriveInches;
 import frc.robot.commands.DriveLEDPattern;
+import frc.robot.commands.RotateDegrees;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.OnBoardLEDs;
 
@@ -19,9 +20,11 @@ public class Robot extends TimedRobot {
 
   private XboxController controller = new XboxController(Constants.JOYSTICK_IDS.CONTROLLER);
   private LinkedList<Integer> color_pattern = new LinkedList<Integer>();
-  private int travel_inches = Constants.COPY_PATTERN_ROUND.BASE_TRAVEL_INCHES;
+  private int travel_inches = Constants.TRAVEL_DISTANCE.BASE_TRAVEL_INCHES;
+  private int inches_displaced = 0;
   private int inputted_order = -1;
   private double speed = 0.75;
+  private boolean is_racing = true;
 
   // Subsystems:
   private Drivetrain drivetrain = new Drivetrain();
@@ -58,16 +61,8 @@ public class Robot extends TimedRobot {
     return true;
   }
 
-  @Override
-  public void robotInit() {}
-
-  @Override
-  public void teleopInit() {
-   
-  }
-
-  @Override
-  public void teleopPeriodic() {
+  private void race()
+  {
     new DriveLEDPattern(LEDs, color_pattern).schedule();
 
     boolean successfully_copied_pattern = true;
@@ -86,17 +81,43 @@ public class Robot extends TimedRobot {
     if(successfully_copied_pattern)
     {
       new DriveInches(speed, travel_inches, drivetrain).schedule();
-      travel_inches += Constants.COPY_PATTERN_ROUND.BASE_TRAVEL_INCHES;
+      inches_displaced += travel_inches;
+      travel_inches += Constants.TRAVEL_DISTANCE.BASE_TRAVEL_INCHES;
     } 
     else
     {
-      new DriveInches(-speed, -Constants.COPY_PATTERN_ROUND.BASE_TRAVEL_INCHES, drivetrain).schedule();
-      travel_inches = Constants.COPY_PATTERN_ROUND.BASE_TRAVEL_INCHES;
+      new DriveInches(-speed, -Constants.TRAVEL_DISTANCE.BASE_TRAVEL_INCHES, drivetrain).schedule();
+      inches_displaced -= Constants.TRAVEL_DISTANCE.BASE_TRAVEL_INCHES;
+      travel_inches = Constants.TRAVEL_DISTANCE.BASE_TRAVEL_INCHES;
     }   
 
     color_pattern.addLast(getRandomNumber(0, 2));
   }
 
-  @Override public void disabledInit() {}
-  @Override public void disabledPeriodic() {}
+  private void finallyGotGood()
+  {
+    LinkedList<Integer> got_good_pattern = new LinkedList<Integer>();
+
+    for(int i = 0; i < Constants.COPY_PATTERN_ROUND.ORDERS_LISTED.length; i++)
+    {
+      got_good_pattern.addLast(Constants.COPY_PATTERN_ROUND.ORDERS_LISTED[i]);
+    }
+
+    new ParallelCommandGroup(new DriveLEDPattern(LEDs, got_good_pattern), 
+    new RotateDegrees(drivetrain, true, speed, 820)).schedule(); 
+  }
+
+  @Override
+  public void teleopPeriodic() {
+
+    if(is_racing)
+    {
+      race();
+      is_racing = (inches_displaced < Constants.TRAVEL_DISTANCE.RACE_OVERALL_INCHES);
+    }
+    else
+    {
+      finallyGotGood();
+    }
+  }
 }
