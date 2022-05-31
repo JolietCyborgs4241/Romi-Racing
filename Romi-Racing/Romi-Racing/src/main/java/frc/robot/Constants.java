@@ -14,6 +14,11 @@ package frc.robot;
  */
 public final class Constants 
 {
+    public static final class JOYSTICK_IDS
+    {
+        public static final int CONTROLLER = 0;
+    }
+
     public static final class LED_PINS
     {
         public static final int RED_LED_DIO_PIN = 8; //EXT PIN: 0
@@ -29,6 +34,6 @@ public final class Constants
         
         public static final int SIGNALED_LED_DURATION_MILLIS = 500;
         public static final int ROUND_COOL_DOWN_MILLIS = 1000;
-        public static final double BASE_TRAVEL_INCHES = 2.0; 
+        public static final int BASE_TRAVEL_INCHES = 2; 
     }
 }

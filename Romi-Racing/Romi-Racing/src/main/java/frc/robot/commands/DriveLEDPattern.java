@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.util.LinkedList;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.OnBoardLEDs;
@@ -15,8 +17,8 @@ public class DriveLEDPattern extends CommandBase
         public LED_Activity() {}
     }
 
-    public DriveLEDPattern(OnBoardLEDs LEDs, int[] LED_ID_pattern) {
-        for(int i = 0; i < LED_ID_pattern.length; i++)
+    public DriveLEDPattern(OnBoardLEDs LEDs, LinkedList<Integer> LED_ID_pattern) {
+        for(int i = 0; i < LED_ID_pattern.size(); i++)
         {
             try
             {
@@ -29,12 +31,12 @@ public class DriveLEDPattern extends CommandBase
         }
     }
 
-    private LED_Activity getLEDActivity(int[] LED_ID_pattern, int pattern_index) {
+    private LED_Activity getLEDActivity(LinkedList<Integer> LED_ID_pattern, int pattern_index) {
         LED_Activity LED_activity = new LED_Activity();
 
-        LED_activity.red_is_active = (LED_ID_pattern[pattern_index] == Constants.COPY_PATTERN_ROUND.RED_LED_ORDER_ID);
-        LED_activity.green_is_active = (LED_ID_pattern[pattern_index] == Constants.COPY_PATTERN_ROUND.GREEN_LED_ORDER_ID);
-        LED_activity.blue_is_active = (LED_ID_pattern[pattern_index] == Constants.COPY_PATTERN_ROUND.BLUE_LED_ORDER_ID);
+        LED_activity.red_is_active = (LED_ID_pattern.get(pattern_index) == Constants.COPY_PATTERN_ROUND.RED_LED_ORDER_ID);
+        LED_activity.green_is_active = (LED_ID_pattern.get(pattern_index) == Constants.COPY_PATTERN_ROUND.GREEN_LED_ORDER_ID);
+        LED_activity.blue_is_active = (LED_ID_pattern.get(pattern_index) == Constants.COPY_PATTERN_ROUND.BLUE_LED_ORDER_ID);
         
         return LED_activity;
     }
